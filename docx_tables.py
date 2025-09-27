@@ -171,14 +171,14 @@ def parse_table(table):
 def create_reference_table(table_obj: Table):
     dir = f"{config.output_dir}/{config.document_type}/table"
     table_title = table_obj.title.text
-    id = get_proper_id(table_title)
-    id = validate_id(dir, id)
+    base_id = get_proper_id(table_title)
+    table_id = "table_" + validate_id(dir, base_id)
 
-    table_obj.set_id(id)
+    table_obj.set_id(table_id)
     table_obj.clear()
 
     ref_topic = ET.Element('reference')
-    ref_topic.set('id', f"table_topic_{id}")
+    ref_topic.set('id', f"table_topic_{table_id}")
     ET.SubElement(ref_topic, 'title').text = table_title
     ref_body = ET.SubElement(ref_topic, 'refbody')
     ref_body.append(table_obj.table)
@@ -187,11 +187,11 @@ def create_reference_table(table_obj: Table):
     ET.indent(ref_topic)
     topic_txt = ET.tostring(ref_topic, encoding='utf-8')
 
-    with open(f"{dir}/{id}.dita", 'xb') as f:
+    with open(f"{dir}/{table_id}.dita", 'xb') as f:
         f.write(header)
         f.write(topic_txt)
 
-    return id
+    return table_id
 
 
 def process_tables_docx():
@@ -219,8 +219,8 @@ def process_tables_docx():
                     logger.error(f'Failed to parse table {table_title} because of the following error: {e}')
                     table = _empty_table(table_title)
 
-                id = create_reference_table(table)
-                table_map.add_keydef(table_title, id)
+                t_id = create_reference_table(table)
+                table_map.add_keydef(table_title, t_id)
             else:
                 pass
         table_map.save()

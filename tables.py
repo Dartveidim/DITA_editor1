@@ -6,16 +6,16 @@ from docx_tables import process_tables_docx
 from table import TableKeyReference
 
 def create_reference(table_title: str) -> str:
-    id = get_proper_id(table_title)
+    base_id = get_proper_id(table_title)
     dir = f"{config.output_dir}/{config.document_type}/table"
-    id = validate_id(dir, id)
+    table_id = validate_id(dir, base_id)
 
     reference_txt = f"""<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
-<reference id="table_topic_{id}">
+<reference id="{table_id}">
   <title>{table_title}</title>
   <refbody>
-    <table id="{id}">
+    <table id="{table_id}">
       <title>{table_title}</title>
       <tgroup cols="1">
         <tbody>

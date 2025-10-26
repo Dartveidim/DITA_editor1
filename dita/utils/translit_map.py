@@ -1,13 +1,6 @@
-from abbrev import sokr
-
-def get_proper_id(title: str) -> str:
-    id = sokr(title)
-    id = clean(id)
-    id = transliterate(id)
-    return id
-
-def clean(txt: str) -> str:
-    slovar = {
+# Файл содержит словари и шаблоны для правильной транслитерации из кирилицы в латиницу
+# шаблоны используемые в файле translit.py
+repl_map = {
         ',': '_',
         '/': '-',
         ' ': '_',
@@ -25,15 +18,8 @@ def clean(txt: str) -> str:
         '}': '',
         '_': '_',
     }
-    txt = txt.lower()
-    for key in slovar:
-        txt = txt.replace(k, v)
-    while '__' in txt:
-        txt = txt.replace(key, slovar[key])
-    return txt.strip('_')
 
-def transliterate(name: str) -> str:
-    slovar = {
+translit_dict = {
         'а':'a','б':'b','в':'v','г':'g','д':'d',
         'е':'e','ё':'yo','ж':'zh','з':'z','и':'i',
         'й':'j','к':'k','л':'l','м':'m','н':'n',
@@ -42,7 +28,15 @@ def transliterate(name: str) -> str:
         'ш':'sh','щ':'sch','ъ':'','ы':'y','ь':'',
         'э':'e','ю':'yu','я':'ya'
     }
-    name = name.lower()
-    for key in slovar:
-        name = name.replace(key, slovar[key])
-    return name.strip('_')
+
+# шаблоны используемые в файле abbrev.py
+abbrev_clean_words = {
+        ' и ': '',
+        ' в ': '',
+        ' при ': '',
+        ' на ': '',
+        ' с ': '',
+        ' по ': '',
+    }
+
+glasnye_letters = {'у','е','ы','а','о','э','я','и','ю'}

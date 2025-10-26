@@ -1,5 +1,5 @@
 import configparser
-from docx import Docx
+from dita.services.docx import Docx
 
 config = configparser.ConfigParser()
 config.read('settings.ini')
